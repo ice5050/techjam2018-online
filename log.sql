@@ -132,6 +132,7 @@ SELECT
   COALESCE(purchase.amount_b_before, 0) AS amount_b_before,
   COALESCE(purchase.amount_a_after, 0) AS amount_a_after,
   COALESCE(purchase.amount_b_after, 0) AS amount_b_after,
+  COALESCE(purchase.amount_of_a_and_b, 0) AS amount_of_a_and_b,
   COALESCE(advertise.amount_ads_before, 0) AS amount_ads_before,
   COALESCE(advertise.amount_ads_after, 0) AS amount_ads_after,
   saving.month_5,
@@ -196,7 +197,8 @@ LEFT JOIN (
     COUNT(*) FILTER (WHERE product = 'A' AND '[2018-05-03, 2018-07-01]'::daterange @> dt) AS amount_a_before,
     COUNT(*) FILTER (WHERE product = 'B' AND '[2018-05-03, 2018-07-01]'::daterange @> dt) AS amount_b_before,
     COUNT(*) FILTER (WHERE product = 'A' AND '[2018-07-02, 2018-07-06]'::daterange @> dt) AS amount_a_after,
-    COUNT(*) FILTER (WHERE product = 'B' AND '[2018-07-02, 2018-07-06]'::daterange @> dt) AS amount_b_after
+    COUNT(*) FILTER (WHERE product = 'B' AND '[2018-07-02, 2018-07-06]'::daterange @> dt) AS amount_b_after,
+    COUNT(*) AS amount_of_a_and_b
   FROM purchase
   GROUP BY user_id
 ) AS purchase USING (user_id)
